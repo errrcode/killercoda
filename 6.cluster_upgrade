@@ -1,0 +1,313 @@
+controlplane:~$ kubeadm version
+kubeadm version: &version.Info{Major:"1", Minor:"34", EmulationMajor:"", EmulationMinor:"", MinCompatibilityMajor:"", MinCompatibilityMinor:"", GitVersion:"v1.34.3", GitCommit:"df11db1c0f08fab3c0baee1e5ce6efbf816af7f1", GitTreeState:"clean", BuildDate:"2025-12-09T15:05:15Z", GoVersion:"go1.24.11", Compiler:"gc", Platform:"linux/amd64"}
+controlplane:~$     
+controlplane:~$ 
+controlplane:~$ apt list -a kubeadm
+Listing... Done
+kubeadm/unknown,now 1.34.3-1.1 amd64 [installed]
+kubeadm/unknown 1.34.2-1.1 amd64
+kubeadm/unknown 1.34.1-1.1 amd64
+kubeadm/unknown 1.34.0-1.1 amd64
+
+kubeadm/unknown 1.34.3-1.1 arm64
+kubeadm/unknown 1.34.2-1.1 arm64
+kubeadm/unknown 1.34.1-1.1 arm64
+kubeadm/unknown 1.34.0-1.1 arm64
+
+kubeadm/unknown 1.34.3-1.1 ppc64el
+kubeadm/unknown 1.34.2-1.1 ppc64el
+kubeadm/unknown 1.34.1-1.1 ppc64el
+kubeadm/unknown 1.34.0-1.1 ppc64el
+
+kubeadm/unknown 1.34.3-1.1 s390x
+kubeadm/unknown 1.34.2-1.1 s390x
+kubeadm/unknown 1.34.1-1.1 s390x
+kubeadm/unknown 1.34.0-1.1 s390x
+
+controlplane:~$ ls -l /etc/apt/sources.list.d/
+total 12
+-rw-r--r-- 1 root root  114 Dec 18 17:29 kubernetes.list
+-rw-r--r-- 1 root root  105 Dec 18 17:32 mozilla.list
+-rw-r--r-- 1 root root 2988 Feb 10  2025 ubuntu.sources
+controlplane:~$ 
+controlplane:~$ 
+controlplane:~$ cat /etc/apt/sources.list.d/kubernetes.list
+
+deb [signed-by=/etc/apt/keyrings/kubernetes-1-34-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.34/deb/ /
+controlplane:~$ echo "deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.35/deb/ /" | \
+sudo tee /etc/apt/sources.list.d/kubernetes.list
+deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.35/deb/ /
+controlplane:~$ apt list -a kubeadm
+Listing... Done
+kubeadm/now 1.34.3-1.1 amd64 [installed,local]
+
+controlplane:~$ 
+controlplane:~$ 
+controlplane:~$ 
+controlplane:~$ pwd
+/root
+controlplane:~$ cd /etc/apt
+controlplane:/etc/apt$ ls
+apt.conf.d  auth.conf.d  keyrings  preferences.d  sources.list  sources.list.d  trusted.gpg.d
+controlplane:/etc/apt$ cd sources.list
+bash: cd: sources.list: Not a directory
+controlplane:/etc/apt$ cd sources.list.d
+controlplane:/etc/apt/sources.list.d$ ls
+kubernetes.list  mozilla.list  ubuntu.sources
+controlplane:/etc/apt/sources.list.d$ cd k
+bash: cd: k: No such file or directory
+controlplane:/etc/apt/sources.list.d$ cd kubernetes.list
+bash: cd: kubernetes.list: Not a directory
+controlplane:/etc/apt/sources.list.d$ 
+controlplane:/etc/apt/sources.list.d$ 
+controlplane:/etc/apt/sources.list.d$ 
+controlplane:/etc/apt/sources.list.d$ cat kubernetes.list
+deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.35/deb/ /
+controlplane:/etc/apt/sources.list.d$                    
+controlplane:/etc/apt/sources.list.d$ 
+controlplane:/etc/apt/sources.list.d$ 
+controlplane:/etc/apt/sources.list.d$ 
+controlplane:/etc/apt/sources.list.d$ 
+controlplane:/etc/apt/sources.list.d$ echo "deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.34/deb/ /" | \
+sudo tee /etc/apt/sources.list.d/kubernetes.list
+deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.34/deb/ /
+controlplane:/etc/apt/sources.list.d$ 
+controlplane:/etc/apt/sources.list.d$ 
+controlplane:/etc/apt/sources.list.d$ cat kubernetes.list
+deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.34/deb/ /
+controlplane:/etc/apt/sources.list.d$ 
+controlplane:/etc/apt/sources.list.d$ 
+controlplane:/etc/apt/sources.list.d$ 
+controlplane:/etc/apt/sources.list.d$ sudo curl -fsSLo /usr/share/keyrings/kubernetes-archive-keyring.gpg https://packages.cloud.google.com/apt/doc/apt-key.gpg
+echo "deb [signed-by=/usr/share/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee /etc/apt/sources.list.d/kubernetes.list
+sudo apt update
+deb [signed-by=/usr/share/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main
+Hit:2 https://packages.mozilla.org/apt mozilla InRelease            
+Ign:1 https://packages.cloud.google.com/apt kubernetes-xenial InRelease                                 
+Hit:3 http://archive.ubuntu.com/ubuntu noble InRelease                                                  
+Hit:4 http://security.ubuntu.com/ubuntu noble-security InRelease
+Err:5 https://packages.cloud.google.com/apt kubernetes-xenial Release
+  404  Not Found [IP: 64.233.170.139 443]
+Get:6 http://archive.ubuntu.com/ubuntu noble-updates InRelease [126 kB]
+Hit:7 http://archive.ubuntu.com/ubuntu noble-backports InRelease
+Reading package lists... Done
+E: The repository 'https://apt.kubernetes.io kubernetes-xenial Release' does not have a Release file.
+N: Updating from such a repository can't be done securely, and is therefore disabled by default.
+N: See apt-secure(8) manpage for repository creation and user configuration details.
+controlplane:/etc/apt/sources.list.d$ 
+controlplane:/etc/apt/sources.list.d$ 
+controlplane:/etc/apt/sources.list.d$ 
+controlplane:/etc/apt/sources.list.d$ cat kubernetes.list
+deb [signed-by=/usr/share/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main
+controlplane:/etc/apt/sources.list.d$ apt list -a kubeadm
+Listing... Done
+kubeadm/now 1.34.3-1.1 amd64 [installed,local]
+
+controlplane:/etc/apt/sources.list.d$ sudo apt update
+Ign:1 https://packages.cloud.google.com/apt kubernetes-xenial InRelease                         
+Hit:2 https://packages.mozilla.org/apt mozilla InRelease                                        
+Hit:3 http://security.ubuntu.com/ubuntu noble-security InRelease                                
+Err:4 https://packages.cloud.google.com/apt kubernetes-xenial Release
+  404  Not Found [IP: 64.233.170.139 443]
+Hit:5 http://archive.ubuntu.com/ubuntu noble InRelease
+Hit:6 http://archive.ubuntu.com/ubuntu noble-updates InRelease
+Hit:7 http://archive.ubuntu.com/ubuntu noble-backports InRelease
+Reading package lists... Done
+E: The repository 'https://apt.kubernetes.io kubernetes-xenial Release' does not have a Release file.
+N: Updating from such a repository can't be done securely, and is therefore disabled by default.
+N: See apt-secure(8) manpage for repository creation and user configuration details.
+controlplane:/etc/apt/sources.list.d$ 
+controlplane:/etc/apt/sources.list.d$ 
+controlplane:/etc/apt/sources.list.d$ 
+controlplane:/etc/apt/sources.list.d$ 
+controlplane:/etc/apt/sources.list.d$ 
+controlplane:/etc/apt/sources.list.d$ 
+controlplane:/etc/apt/sources.list.d$ 
+controlplane:/etc/apt/sources.list.d$ 
+controlplane:/etc/apt/sources.list.d$ sudo apt update
+Ign:1 https://packages.cloud.google.com/apt kubernetes-xenial InRelease                          
+Get:2 https://packages.mozilla.org/apt mozilla InRelease [1522 B]                                
+Hit:3 http://archive.ubuntu.com/ubuntu noble InRelease                                          
+Err:4 https://packages.cloud.google.com/apt kubernetes-xenial Release
+  404  Not Found [IP: 64.233.170.139 443]
+Hit:5 http://security.ubuntu.com/ubuntu noble-security InRelease
+Hit:6 http://archive.ubuntu.com/ubuntu noble-updates InRelease
+Get:7 https://packages.mozilla.org/apt mozilla/main amd64 Packages [104 kB]
+Hit:8 http://archive.ubuntu.com/ubuntu noble-backports InRelease
+Get:9 https://packages.mozilla.org/apt mozilla/main all Packages [5346 kB]
+Reading package lists... Done       
+E: The repository 'https://apt.kubernetes.io kubernetes-xenial Release' does not have a Release file.
+N: Updating from such a repository can't be done securely, and is therefore disabled by default.
+N: See apt-secure(8) manpage for repository creation and user configuration details.
+controlplane:/etc/apt/sources.list.d$ 
+controlplane:/etc/apt/sources.list.d$ 
+controlplane:/etc/apt/sources.list.d$ apt list -a kubeadm
+Listing... Done
+kubeadm/now 1.34.3-1.1 amd64 [installed,local]
+
+controlplane:/etc/apt/sources.list.d$ 
+controlplane:/etc/apt/sources.list.d$ 
+controlplane:/etc/apt/sources.list.d$ cd ../
+controlplane:/etc/apt$ ls
+apt.conf.d  auth.conf.d  keyrings  preferences.d  sources.list  sources.list.d  trusted.gpg.d
+controlplane:/etc/apt$ cd keyrings
+controlplane:/etc/apt/keyrings$ curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.35/deb/Release.key | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+controlplane:/etc/apt/keyrings$ 
+controlplane:/etc/apt/keyrings$ apt list -a kubeadm
+Listing... Done
+kubeadm/now 1.34.3-1.1 amd64 [installed,local]
+
+controlplane:/etc/apt/keyrings$ echo "deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.35/deb/ /" | sudo tee /etc/apt/sources.list.d/kubernetes.list
+deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.35/deb/ /
+controlplane:/etc/apt/keyrings$ 
+controlplane:/etc/apt/keyrings$ 
+controlplane:/etc/apt/keyrings$ 
+controlplane:/etc/apt/keyrings$ 
+controlplane:/etc/apt/keyrings$ apt list -a kubeadm
+Listing... Done
+kubeadm/now 1.34.3-1.1 amd64 [installed,local]
+
+controlplane:/etc/apt/keyrings$ 
+controlplane:/etc/apt/keyrings$ sudo apt update
+Get:1 https://prod-cdn.packages.k8s.io/repositories/isv:/kubernetes:/core:/stable:/v1.35/deb  InRelease [1227 B]
+Hit:2 https://packages.mozilla.org/apt mozilla InRelease                                                                    
+Hit:3 http://archive.ubuntu.com/ubuntu noble InRelease                                           
+Hit:4 http://security.ubuntu.com/ubuntu noble-security InRelease    
+Hit:5 http://archive.ubuntu.com/ubuntu noble-updates InRelease      
+Hit:6 http://archive.ubuntu.com/ubuntu noble-backports InRelease
+Get:7 https://prod-cdn.packages.k8s.io/repositories/isv:/kubernetes:/core:/stable:/v1.35/deb  Packages [2708 B]
+Fetched 3935 B in 1s (3494 B/s)
+Reading package lists... Done
+Building dependency tree... Done
+Reading state information... Done
+5 packages can be upgraded. Run 'apt list --upgradable' to see them.
+controlplane:/etc/apt/keyrings$ 
+controlplane:/etc/apt/keyrings$ 
+controlplane:/etc/apt/keyrings$ apt list -a kubeadm
+Listing... Done
+kubeadm/unknown 1.35.0-1.1 amd64 [upgradable from: 1.34.3-1.1]
+kubeadm/now 1.34.3-1.1 amd64 [installed,upgradable to: 1.35.0-1.1]
+
+kubeadm/unknown 1.35.0-1.1 arm64
+
+kubeadm/unknown 1.35.0-1.1 ppc64el
+
+kubeadm/unknown 1.35.0-1.1 s390x
+
+controlplane:/etc/apt/keyrings$ sudo apt install kubeadm=1.35.0-1.1
+Reading package lists... Done
+Building dependency tree... Done
+Reading state information... Done
+The following packages will be upgraded:
+  kubeadm
+1 upgraded, 0 newly installed, 0 to remove and 4 not upgraded.
+Need to get 12.4 MB of archives.
+After this operation, 1659 kB disk space will be freed.
+Get:1 https://prod-cdn.packages.k8s.io/repositories/isv:/kubernetes:/core:/stable:/v1.35/deb  kubeadm 1.35.0-1.1 [12.4 MB]
+Fetched 12.4 MB in 1s (24.5 MB/s)
+(Reading database ... 171686 files and directories currently installed.)
+Preparing to unpack .../kubeadm_1.35.0-1.1_amd64.deb ...
+Unpacking kubeadm (1.35.0-1.1) over (1.34.3-1.1) ...
+Setting up kubeadm (1.35.0-1.1) ...
+Scanning processes...                                                                                                        
+Scanning linux images...                                                                                                     
+
+Running kernel seems to be up-to-date.
+
+No services need to be restarted.
+
+No containers need to be restarted.
+
+No user sessions are running outdated binaries.
+
+No VM guests are running outdated hypervisor (qemu) binaries on this host.
+controlplane:/etc/apt/keyrings$ 
+controlplane:/etc/apt/keyrings$ 
+controlplane:/etc/apt/keyrings$ 
+controlplane:/etc/apt/keyrings$ 
+controlplane:/etc/apt/keyrings$ kubectl get nodes
+NAME           STATUS   ROLES           AGE     VERSION
+controlplane   Ready    control-plane   2d23h   v1.34.3
+node01         Ready    <none>          2d22h   v1.34.3
+controlplane:/etc/apt/keyrings$ 
+controlplane:/etc/apt/keyrings$ 
+controlplane:/etc/apt/keyrings$ 
+controlplane:/etc/apt/keyrings$ kubeadm version
+kubeadm version: &version.Info{Major:"1", Minor:"35", EmulationMajor:"", EmulationMinor:"", MinCompatibilityMajor:"", MinCompatibilityMinor:"", GitVersion:"v1.35.0", GitCommit:"66452049f3d692768c39c797b21b793dce80314e", GitTreeState:"clean", BuildDate:"2025-12-17T12:39:26Z", GoVersion:"go1.25.5", Compiler:"gc", Platform:"linux/amd64"}
+controlplane:/etc/apt/keyrings$ 
+controlplane:/etc/apt/keyrings$ 
+controlplane:/etc/apt/keyrings$ 
+controlplane:/etc/apt/keyrings$ k upgrade apply -f v1.35.0
+error: unknown command "upgrade" for "kubectl"
+controlplane:/etc/apt/keyrings$ kubeadm upgrade apply -f v1.35.0
+[upgrade] Reading configuration from the "kubeadm-config" ConfigMap in namespace "kube-system"...
+[upgrade] Use 'kubeadm init phase upload-config kubeadm --config your-config-file' to re-upload it.
+[upgrade/preflight] Running preflight checks
+        [WARNING ContainerRuntimeVersion]: You must update your container runtime to a version that supports the CRI method RuntimeConfig. Falling back to using cgroupDriver from kubelet config will be removed in 1.36. For more information, see https://git.k8s.io/enhancements/keps/sig-node/4033-group-driver-detection-over-cri
+[upgrade] Running cluster health checks
+[upgrade/preflight] You have chosen to upgrade the cluster version to "v1.35.0"
+[upgrade/versions] Cluster version: v1.34.3
+[upgrade/versions] kubeadm version: v1.35.0
+[upgrade/preflight] Pulling images required for setting up a Kubernetes cluster
+[upgrade/preflight] This might take a minute or two, depending on the speed of your internet connection
+[upgrade/preflight] You can also perform this action beforehand using 'kubeadm config images pull'
+W1221 16:47:22.798177   37974 checks.go:906] detected that the sandbox image "registry.k8s.io/pause:3.5" of the container runtime is inconsistent with that used by kubeadm. It is recommended to use "registry.k8s.io/pause:3.10.1" as the CRI sandbox image.
+[upgrade/control-plane] Upgrading your static Pod-hosted control plane to version "v1.35.0" (timeout: 5m0s)...
+[upgrade/staticpods] Writing new Static Pod manifests to "/etc/kubernetes/tmp/kubeadm-upgraded-manifests756874489"
+[upgrade/staticpods] Preparing for "etcd" upgrade
+[upgrade/staticpods] Renewing etcd-server certificate
+[upgrade/staticpods] Renewing etcd-peer certificate
+[upgrade/staticpods] Renewing etcd-healthcheck-client certificate
+[upgrade/staticpods] Moving new manifest to "/etc/kubernetes/manifests/etcd.yaml" and backing up old manifest to "/etc/kubernetes/tmp/kubeadm-backup-manifests-2025-12-21-16-47-53/etcd.yaml"
+[upgrade/staticpods] Waiting for the kubelet to restart the component
+[upgrade/staticpods] This can take up to 5m0s
+[apiclient] Found 1 Pods for label selector component=etcd
+[upgrade/staticpods] Component "etcd" upgraded successfully!
+[upgrade/etcd] Waiting for etcd to become available
+[upgrade/staticpods] Preparing for "kube-apiserver" upgrade
+[upgrade/staticpods] Renewing apiserver certificate
+[upgrade/staticpods] Renewing apiserver-kubelet-client certificate
+[upgrade/staticpods] Renewing front-proxy-client certificate
+[upgrade/staticpods] Renewing apiserver-etcd-client certificate
+[upgrade/staticpods] Moving new manifest to "/etc/kubernetes/manifests/kube-apiserver.yaml" and backing up old manifest to "/etc/kubernetes/tmp/kubeadm-backup-manifests-2025-12-21-16-47-53/kube-apiserver.yaml"
+[upgrade/staticpods] Waiting for the kubelet to restart the component
+[upgrade/staticpods] This can take up to 5m0s
+[apiclient] Found 1 Pods for label selector component=kube-apiserver
+[upgrade/staticpods] Component "kube-apiserver" upgraded successfully!
+[upgrade/staticpods] Preparing for "kube-controller-manager" upgrade
+[upgrade/staticpods] Renewing controller-manager.conf certificate
+[upgrade/staticpods] Moving new manifest to "/etc/kubernetes/manifests/kube-controller-manager.yaml" and backing up old manifest to "/etc/kubernetes/tmp/kubeadm-backup-manifests-2025-12-21-16-47-53/kube-controller-manager.yaml"
+[upgrade/staticpods] Waiting for the kubelet to restart the component
+[upgrade/staticpods] This can take up to 5m0s
+[apiclient] Found 1 Pods for label selector component=kube-controller-manager
+[upgrade/staticpods] Component "kube-controller-manager" upgraded successfully!
+[upgrade/staticpods] Preparing for "kube-scheduler" upgrade
+[upgrade/staticpods] Renewing scheduler.conf certificate
+[upgrade/staticpods] Moving new manifest to "/etc/kubernetes/manifests/kube-scheduler.yaml" and backing up old manifest to "/etc/kubernetes/tmp/kubeadm-backup-manifests-2025-12-21-16-47-53/kube-scheduler.yaml"
+[upgrade/staticpods] Waiting for the kubelet to restart the component
+[upgrade/staticpods] This can take up to 5m0s
+[apiclient] Found 1 Pods for label selector component=kube-scheduler
+[upgrade/staticpods] Component "kube-scheduler" upgraded successfully!
+[upgrade/control-plane] The control plane instance for this node was successfully upgraded!
+[upload-config] Storing the configuration used in ConfigMap "kubeadm-config" in the "kube-system" Namespace
+[kubelet] Creating a ConfigMap "kubelet-config" in namespace kube-system with the configuration for the kubelets in the cluster
+[upgrade/kubeconfig] The kubeconfig files for this node were successfully upgraded!
+W1221 16:50:44.654847   37974 postupgrade.go:105] Using temporary directory /etc/kubernetes/tmp/kubeadm-kubelet-config-2025-12-21-16-50-44 for kubelet config. To override it set the environment variable KUBEADM_UPGRADE_DRYRUN_DIR
+[upgrade] Backing up kubelet config file to /etc/kubernetes/tmp/kubeadm-kubelet-config-2025-12-21-16-50-44/config.yaml
+[patches] Applied patch of type "application/strategic-merge-patch+json" to target "kubeletconfiguration"
+[kubelet-start] Writing kubelet configuration to file "/var/lib/kubelet/config.yaml"
+[upgrade/kubelet-config] The kubelet configuration for this node was successfully upgraded!
+[upgrade/bootstrap-token] Configuring bootstrap token and cluster-info RBAC rules
+[bootstrap-token] Configured RBAC rules to allow Node Bootstrap tokens to get nodes
+[bootstrap-token] Configured RBAC rules to allow Node Bootstrap tokens to post CSRs in order for nodes to get long term certificate credentials
+[bootstrap-token] Configured RBAC rules to allow the csrapprover controller automatically approve CSRs from a Node Bootstrap Token
+[bootstrap-token] Configured RBAC rules to allow certificate rotation for all node client certificates in the cluster
+[addons] Applied essential addon: CoreDNS
+[addons] Applied essential addon: kube-proxy
+W1221 16:50:48.998038   37974 postupgrade.go:203] Using temporary directory /etc/kubernetes/tmp/kubeadm-kubelet-env383047126 for kubelet env file. To override it set the environment variable KUBEADM_UPGRADE_DRYRUN_DIR
+[upgrade] Backing up kubelet env file to /etc/kubernetes/tmp/kubeadm-kubelet-env383047126/kubeadm-flags.env
+[kubelet-start] Writing kubelet environment file with flags to file "/var/lib/kubelet/kubeadm-flags.env"
+
+[upgrade] SUCCESS! A control plane node of your cluster was upgraded to "v1.35.0".
+
+[upgrade] Now please proceed with upgrading the rest of the nodes by following the right order.
