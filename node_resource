@@ -1,0 +1,25 @@
+controlplane:~$ kubectl config current-context
+kubernetes-admin@kubernetes
+controlplane:~$ kubectl top node
+NAME           CPU(cores)   CPU(%)   MEMORY(bytes)   MEMORY(%)   
+controlplane   89m          8%       1391Mi          67%         
+node01         32m          3%       854Mi           47%         
+controlplane:~$ kubectl top node --sort-by=memory
+NAME           CPU(cores)   CPU(%)   MEMORY(bytes)   MEMORY(%)   
+controlplane   87m          8%       1288Mi          62%         
+node01         33m          3%       854Mi           47%         
+controlplane:~$ kubectl top node --sort-by=memory | awk 'NR==2 {print $1}'
+controlplane
+controlplane:~$ echo $(kubectl config current-context),(kubectl top node --sort-by=memory | awk 'NR==2 {print $1}') > high_memory_node.txt
+bash: syntax error near unexpected token `('
+controlplane:~$ echo $("kubectl config current-context"),("kubectl top node --sort-by=memory | awk 'NR==2 {print $1}'") > high_memory_node.txt
+bash: syntax error near unexpected token `('
+controlplane:~$ echo $"(kubectl config current-context)","(kubectl top node --sort-by=memory | awk 'NR==2 {print $1}')" > high_memory_node.txt
+controlplane:~$ cat high_memory_node.txt 
+(kubectl config current-context),(kubectl top node --sort-by=memory | awk 'NR==2 {print }')
+controlplane:~$ echo "$(kubectl config current-context)","$(kubectl top node --sort-by=memory | awk 'NR==2 {print $1}')" > high_memory_node.txt
+controlplane:~$ cat high_memory_node.txt 
+kubernetes-admin@kubernetes,controlplane
+controlplane:~$ 
+controlplane:~$ 
+controlplane:~$ 
